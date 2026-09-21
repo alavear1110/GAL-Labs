@@ -72,7 +72,19 @@
         }
       }
     },
-    "decision_debt": { "type": "array" },
+    "decision_debt": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","decision","priority"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "decision": { "type": "string", "minLength": 1 },
+          "priority": { "enum": ["BLOCKING","NON_BLOCKING"] }
+        }
+      }
+    },
     "resolved_history": { "type": "array" },
     "decisions": { "type": "array" },
     "readiness": {
