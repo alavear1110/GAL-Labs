@@ -1,6 +1,6 @@
 # STATE-004 — Generated View Discipline
 
-Kiro must not directly edit `.gal/context/*`.
+The host must not directly edit `.gal/context/*`.
 
 PASS:
 - update project-state.json
