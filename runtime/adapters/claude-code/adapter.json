@@ -1,0 +1,18 @@
+{
+  "gal_adapter_contract": "1.0",
+  "host": "Claude Code",
+  "provider": "Anthropic",
+  "instruction_entrypoint": "CLAUDE.md",
+  "capabilities": {
+    "read_files": true,
+    "write_files": true,
+    "execute_commands": true,
+    "persistent_project_instructions": true,
+    "supports_generated_view_sync": true,
+    "supports_validation_execution": true
+  },
+  "limitations": [
+    "Host-native instruction and tool behavior must not redefine GAL Core semantics.",
+    "Observed execution capability in a given environment governs whether sync or validation may be claimed as executed."
+  ]
+}
