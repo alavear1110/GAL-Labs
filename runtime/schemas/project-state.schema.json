@@ -86,6 +86,27 @@
             "uniqueItems": true,
             "items": { "enum": ["discovery","stakeholder_review","development","qa_test_design"] }
           }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "priority": { "const": "BLOCKING" } },
+              "required": ["priority"]
+            },
+            "then": {
+              "properties": { "blocks": { "minItems": 1 } }
+            }
+          },
+          {
+            "if": {
+              "properties": { "priority": { "const": "NON_BLOCKING" } },
+              "required": ["priority"]
+            },
+            "then": {
+              "properties": { "blocks": { "maxItems": 0 } }
+            }
+          }
+        ]
         }
       }
     },
