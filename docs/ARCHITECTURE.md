@@ -38,6 +38,8 @@ Host-native discovery may use a thin repository-level loader. The canonical adap
 ### Deterministic runtime
 Owns state initialization, generated-view synchronization, readiness calculation, and validation.
 
+Artifact reviewability is not persisted as a separate boolean. It is derived from the requirements review gates and current validation state when readiness is calculated. This avoids a second mutable fact that can drift from the gates that determine it.
+
 ## Canonical state
 `.gal/state/project-state.json` is the single writable source of GAL project state. `.gal/context/*` is generated/read-only to AI.
 
