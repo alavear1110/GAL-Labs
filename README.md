@@ -14,9 +14,9 @@ GAL Core defines the method. AI products integrate through a **Host Adapter Cont
 - provider/host independence
 
 ## Current development milestone
-**v0.5.0 — Host Independence**
+**v0.5.2 — Claude Code Adapter & Conformance**
 
-Codex is the primary reference host for development beginning with v0.5.0. Kiro remains supported through an adapter. Codex does not define GAL semantics; GAL Core does.
+GAL Core v0.5.1 is the current hardened runtime baseline. Codex remains the reference development host; Kiro remains supported through an adapter. v0.5.2 adds Claude Code under the same Host Adapter Contract and conformance controls. No host defines GAL semantics; GAL Core does.
 
 Architecture:
 
@@ -27,7 +27,7 @@ Host Adapter Contract
    |
    +-- Codex
    +-- Kiro
-   +-- Claude Code       (planned)
+   +-- Claude Code       (v0.5.2)
    +-- Gemini CLI        (planned)
    +-- GitHub Copilot    (planned)
    +-- Cursor            (planned)
