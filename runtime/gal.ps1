@@ -187,7 +187,8 @@ function RecalcReadiness {
    }).Count
  }
  $a=$x.artifacts.requirements
- $ok=$a.exists -and $a.gal_scrubbed -and $a.reconciled -and $a.provenance_validated -and $a.state_validated -and $x.last_validation.executed -and $x.last_validation.passed
+ $contentReady=$a.exists -and $a.gal_scrubbed -and $a.reconciled -and $a.provenance_validated
+ $validationPassed=$a.state_validated -and $x.last_validation.executed -and $x.last_validation.passed
 
  if($x.project_name -eq "Uninitialized Project"){
    $x.readiness.discovery.status="NOT_READY"
@@ -203,9 +204,9 @@ function RecalcReadiness {
    $x.readiness.discovery.reason="Project context established with no active important clarification questions"
  }
 
- if(!$ok){
+ if(!$contentReady){
    $x.readiness.stakeholder_review.status="NOT_READY"
-   $x.readiness.stakeholder_review.reason="Requirements artifact has not passed all review gates"
+   $x.readiness.stakeholder_review.reason="Requirements artifact has not passed the content review gates"
  } elseif($blockingByStage["stakeholder_review"]){
    $x.readiness.stakeholder_review.status="NOT_READY"
    $x.readiness.stakeholder_review.reason="$($blockingByStage["stakeholder_review"]) decision-debt item(s) block stakeholder review"
@@ -214,12 +215,15 @@ function RecalcReadiness {
    $x.readiness.stakeholder_review.reason="$active active important clarification question(s)"
  } else {
    $x.readiness.stakeholder_review.status="READY"
-   $x.readiness.stakeholder_review.reason="Requirements artifact passed review gates with no active important clarifications or blocking decision debt"
+   $x.readiness.stakeholder_review.reason="Requirements artifact passed content review gates with no active important clarifications or blocking decision debt"
  }
 
- if(!$ok){
+ if(!$contentReady){
    $x.readiness.development.status="NOT_READY"
-   $x.readiness.development.reason="Requirements artifact has not passed all review gates"
+   $x.readiness.development.reason="Requirements artifact has not passed the content review gates"
+ } elseif(!$validationPassed){
+   $x.readiness.development.status="NOT_READY"
+   $x.readiness.development.reason="Deterministic GAL state validation has not executed successfully"
  } elseif($blockingByStage["development"]){
    $x.readiness.development.status="NOT_READY"
    $x.readiness.development.reason="$($blockingByStage["development"]) decision-debt item(s) block development"
@@ -228,9 +232,12 @@ function RecalcReadiness {
    $x.readiness.development.reason=if($active){"Requirements artifact passed review gates; $active active important clarification question(s) remain"}else{"Requirements artifact passed review gates; development readiness remains conservative until phase-specific READY criteria are defined"}
  }
 
- if(!$ok){
+ if(!$contentReady){
    $x.readiness.qa_test_design.status="NOT_READY"
-   $x.readiness.qa_test_design.reason="Requirements artifact has not passed all review gates"
+   $x.readiness.qa_test_design.reason="Requirements artifact has not passed the content review gates"
+ } elseif(!$validationPassed){
+   $x.readiness.qa_test_design.status="NOT_READY"
+   $x.readiness.qa_test_design.reason="Deterministic GAL state validation has not executed successfully"
  } else {
    $x.readiness.qa_test_design.status="READY_WITH_GAPS"
    $x.readiness.qa_test_design.reason=if($blockingByStage["qa_test_design"]){"Requirements artifact passed review gates; $($blockingByStage["qa_test_design"]) decision-debt item(s) block complete QA test design"}elseif($active){"Requirements artifact passed review gates; $active active important clarification question(s) remain"}else{"Requirements artifact passed review gates; QA readiness remains conservative until phase-specific READY criteria are defined"}

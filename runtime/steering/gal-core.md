@@ -79,8 +79,12 @@ Readiness describes whether meaningful work can proceed without inventing unreso
 
 For `qa_test_design`, phase-targeted decision debt that blocks **complete** test design results in `READY_WITH_GAPS` once the requirements artifact has passed its review/validation gates, because tests for established behavior can still be designed. Use `NOT_READY` for QA only when no meaningful test-design work can proceed without assuming unresolved behavior. Host reasoning must not reinterpret a `qa_test_design` debt target as automatically requiring `NOT_READY`.
 
-## Validation truth
-Never claim validation passed unless the deterministic validator actually executed and returned PASS.
+## Content readiness and deterministic validation
+**Content readiness** asks whether meaningful work at a gate can proceed from established evidence and artifacts without inventing unresolved decisions. **Deterministic validation** asks whether canonical GAL state satisfies deterministic structural and semantic invariants. These are distinct evaluations; they do not give `READY` a second meaning.
+
+Validation status must never be fabricated. Never claim validation passed unless the deterministic validator actually executed and returned PASS. Validation truth remains represented by `last_validation` and `artifacts.requirements.state_validated`.
+
+Lack of executed validation does not by itself make an otherwise prepared artifact unavailable for `stakeholder_review`. Accordingly, `READY` for `stakeholder_review` means that meaningful stakeholder review can proceed; it does **not** mean deterministic validation passed. Development and QA remain validation-gated in v0.5.1.
 
 ## Host boundary
 Execution details belong in host adapters. If host terminology conflicts with GAL vocabulary, GAL vocabulary wins inside canonical state.
