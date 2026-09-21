@@ -164,11 +164,12 @@ function ValidateState {
  if($e.Count){
    SaveState $x
    Write-Host "GAL state validation FAILED" -ForegroundColor Red
-   exit 1
+   return $false
  }
 
  SaveState $x
  Write-Host "GAL state validation passed." -ForegroundColor Green
+ return $true
 }
 
 function Status {
@@ -181,6 +182,9 @@ switch($Command){
  "status"{Status}
  "sync"{Sync}
  "recalc-readiness"{RecalcReadiness}
- "validate-state"{ValidateState}
+ "validate-state"{
+   $validationPassed=ValidateState
+   if($validationPassed){exit 0}else{exit 1}
+ }
  default{Write-Host ".\gal.ps1 init | status | sync | recalc-readiness | validate-state"}
 }
