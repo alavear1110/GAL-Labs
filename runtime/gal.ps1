@@ -1,6 +1,6 @@
 param(
  [Parameter(Position=0)]
- [ValidateSet("init","status","sync","recalc-readiness","validate-state","help")]
+ [ValidateSet("init","migrate","status","sync","recalc-readiness","validate-state","help")]
  [string]$Command="help"
 )
 $ErrorActionPreference="Stop"
@@ -17,6 +17,101 @@ function LoadState {
 
 function SaveState($x){
  $x | ConvertTo-Json -Depth 25 | Set-Content -Encoding UTF8 $SF
+}
+
+function TestCandidateState($x) {
+ $candidateJson=$x | ConvertTo-Json -Depth 25
+ $schemaFile=Join-Path $Pkg "schemas\project-state.schema.json"
+ try {
+   if(!(Test-Json -Json $candidateJson -SchemaFile $schemaFile -ErrorAction Stop)){
+     throw "candidate project state does not conform to project-state.schema.json"
+   }
+ } catch {
+   throw "Candidate v0.5.1 project state is invalid: $($_.Exception.Message)"
+ }
+
+ $questionIds=@($x.open_questions | ForEach-Object {$_.id})
+ foreach($d in @($x.decision_debt)){
+   if($null -ne $d.source_question_id -and $d.source_question_id -notin $questionIds){
+     throw "Candidate v0.5.1 project state is invalid: decision debt '$($d.id)' references source question '$($d.source_question_id)' that is not present in open_questions"
+   }
+ }
+}
+
+function Migrate {
+ $configFile=Join-Path $Gal "state\config.json"
+ $stateBackup=Join-Path $Gal "state\project-state.v0.5.0.backup.json"
+ $configBackup=Join-Path $Gal "state\config.v0.5.0.backup.json"
+
+ # Complete every read-only preflight and candidate check before creating or
+ # replacing any persistent file.
+ if(!(Test-Path -PathType Leaf $SF)){throw "Migration requires .gal/state/project-state.json"}
+ if(!(Test-Path -PathType Leaf $configFile)){throw "Migration requires .gal/state/config.json"}
+ try {$stateJson=Get-Content $SF -Raw -ErrorAction Stop; $state=$stateJson | ConvertFrom-Json -ErrorAction Stop}
+ catch {throw "Migration preflight could not read or parse .gal/state/project-state.json: $($_.Exception.Message)"}
+ try {$configJson=Get-Content $configFile -Raw -ErrorAction Stop; $config=$configJson | ConvertFrom-Json -ErrorAction Stop}
+ catch {throw "Migration preflight could not read or parse .gal/state/config.json: $($_.Exception.Message)"}
+
+ if($state.gal_version -ne $config.gal_version){
+   throw "Migration rejected mixed-version input: project state is '$($state.gal_version)' and config is '$($config.gal_version)'"
+ }
+ if($state.gal_version -ne "0.5.0"){
+   throw "Migration supports only GAL 0.5.0 -> 0.5.1; found '$($state.gal_version)'"
+ }
+ if((Test-Path $stateBackup) -or (Test-Path $configBackup)){
+   throw "Migration cannot preserve originals because a v0.5.0 backup already exists; existing backups will not be overwritten"
+ }
+
+ # Work on an independent object so preflight failures cannot mutate state.
+ $candidate=$stateJson | ConvertFrom-Json -ErrorAction Stop
+ $candidate.gal_version=$Version
+ $blockingWithoutGates=@()
+ foreach($debt in @($candidate.decision_debt)){
+   $propertyNames=@($debt.PSObject.Properties.Name)
+   if("source_question_id" -notin $propertyNames){
+     $debt | Add-Member -NotePropertyName source_question_id -NotePropertyValue $null
+   }
+   if("blocks" -notin $propertyNames){
+     if($debt.priority -eq "BLOCKING"){
+       $debtId=if($debt.id){$debt.id}else{"<missing ID>"}
+       $blockingWithoutGates+=$debtId
+     }
+     elseif($debt.priority -eq "NON_BLOCKING"){$debt | Add-Member -NotePropertyName blocks -NotePropertyValue @()}
+   }
+ }
+ if($blockingWithoutGates.Count){
+   throw "Migration requires semantic reconciliation for legacy BLOCKING decision debt: $($blockingWithoutGates -join ', '). Assign each item one or more v0.5.1 readiness gates in 'blocks' before migration can complete."
+ }
+ TestCandidateState $candidate
+
+ $candidateConfig=$configJson | ConvertFrom-Json -ErrorAction Stop
+ $candidateConfig.gal_version=$Version
+ $stateTemp="$SF.migration.tmp"
+ $configTemp="$configFile.migration.tmp"
+ $backupsCreated=$false
+ try {
+   $candidate | ConvertTo-Json -Depth 25 | Set-Content -Encoding UTF8 $stateTemp
+   $candidateConfig | ConvertTo-Json -Depth 25 | Set-Content -Encoding UTF8 $configTemp
+   [System.IO.File]::Copy($SF,$stateBackup,$false)
+   try {[System.IO.File]::Copy($configFile,$configBackup,$false)}
+   catch {Remove-Item $stateBackup -Force -ErrorAction SilentlyContinue; throw}
+   $backupsCreated=$true
+
+   Move-Item $stateTemp $SF -Force
+   Move-Item $configTemp $configFile -Force
+   if(!(ValidateState)){throw "post-write v0.5.1 state validation failed"}
+   Sync
+ } catch {
+   $failure=$_.Exception.Message
+   if($backupsCreated){
+     Copy-Item $stateBackup $SF -Force
+     Copy-Item $configBackup $configFile -Force
+   }
+   throw "GAL migration failed; original v0.5.0 state and config were restored: $failure"
+ } finally {
+   Remove-Item $stateTemp,$configTemp -Force -ErrorAction SilentlyContinue
+ }
+ Write-Host "GAL migration from 0.5.0 to 0.5.1 completed successfully." -ForegroundColor Green
 }
 
 function Header {
@@ -203,6 +298,7 @@ function Status {
 
 switch($Command){
  "init"{Init}
+ "migrate"{Migrate}
  "status"{Status}
  "sync"{Sync}
  "recalc-readiness"{RecalcReadiness}
@@ -210,5 +306,5 @@ switch($Command){
    $validationPassed=ValidateState
    if($validationPassed){exit 0}else{exit 1}
  }
- default{Write-Host ".\gal.ps1 init | status | sync | recalc-readiness | validate-state"}
+ default{Write-Host ".\gal.ps1 init | migrate | status | sync | recalc-readiness | validate-state"}
 }
