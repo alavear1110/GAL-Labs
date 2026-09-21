@@ -43,15 +43,14 @@
         "requirements": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["path","exists","gal_scrubbed","reconciled","provenance_validated","state_validated","reviewable"],
+          "required": ["path","exists","gal_scrubbed","reconciled","provenance_validated","state_validated"],
           "properties": {
             "path": { "type": "string" },
             "exists": { "type": "boolean" },
             "gal_scrubbed": { "type": "boolean" },
             "reconciled": { "type": "boolean" },
             "provenance_validated": { "type": "boolean" },
-            "state_validated": { "type": "boolean" },
-            "reviewable": { "type": "boolean" }
+            "state_validated": { "type": "boolean" }
           }
         }
       }
