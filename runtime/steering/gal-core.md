@@ -24,6 +24,9 @@ Everything under `.gal/context/` is GENERATED OUTPUT:
 
 Decision debt is reserved for a material unresolved decision, conflict, or assumption that requires confirmation or approval and affects progression or readiness. Blocking is phase-sensitive: an unresolved decision may allow discovery or stakeholder review while preventing development or complete QA test design. Use `priority: BLOCKING` only when at least one readiness gate is named in `blocks`; use `NON_BLOCKING` with an empty `blocks` array when the item currently prevents no readiness gate. Do not mark every unknown as decision debt. Active decision debt lives in `decision_debt`; resolved items belong in history rather than remaining active.
 
+### Question → decision-debt linkage
+When decision debt originates from a tracked clarification question, set `source_question_id` to that question's ID. The question records what needs to be learned or answered; the debt records the unresolved decision's effect on progression. Do not duplicate the question text as a second independent source of truth. Use `source_question_id: null` only when the debt arose from a conflict, assumption, review finding, or other material unresolved decision that did not originate as a tracked question. Resolving the originating question requires the linked active debt to be resolved, replaced, or explicitly retained for a documented remaining decision.
+
 Examples:
 - Unknown payroll transfer mechanics may be `BLOCKING` for `development` and `qa_test_design` without blocking discovery.
 - An undecided optional description field can remain `NON_BLOCKING` with `blocks: []`.
