@@ -43,9 +43,11 @@ GAL Labs is intended to support:
 
 ## Current alpha
 
-The current alpha release is **GAL Runtime v0.4.7**.
+The current alpha line is **GAL Runtime v0.5.0**.
 
-The v0.4.x series has focused on:
+The v0.5.0 line adds host-independent architecture and a canonical Host Adapter Contract while preserving the evidence and state controls established in v0.4.x.
+
+The runtime currently focuses on:
 - adaptive intake
 - evidence classification
 - open-question and decision-debt discipline
