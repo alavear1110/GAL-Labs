@@ -27,8 +27,7 @@
       "gal_scrubbed": false,
       "reconciled": false,
       "provenance_validated": false,
-      "state_validated": false,
-      "reviewable": false
+      "state_validated": false
     }
   },
   "open_questions": [],
