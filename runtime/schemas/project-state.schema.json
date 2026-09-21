@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "GAL Project State v0.4.7",
+  "title": "GAL Project State v0.5.0",
   "type": "object",
   "required": [
     "gal_version",
@@ -11,7 +11,7 @@
   ],
   "properties": {
     "gal_version": {
-      "const": "0.4.7"
+      "const": "0.5.0"
     },
     "gal_mode": {
       "enum": [
