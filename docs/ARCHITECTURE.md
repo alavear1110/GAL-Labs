@@ -1,74 +1,47 @@
 # GAL Runtime Architecture
 
-## Principle
-
-GAL uses a **single canonical state model**.
+## Layers
 
 ```text
-AI / Host Tool
-      |
-      v
+User / Project Evidence
+         |
+         v
+      GAL Core
+         |
+         v
+Host Adapter Contract
+         |
+   Host Adapter
+         |
+         v
+AI execution environment
+         |
+         v
 .gal/state/project-state.json
-      |
-      v
-   gal.ps1 sync
-      |
-      +--> .gal/context/context.md
-      +--> .gal/context/open-questions.md
-      +--> .gal/context/readiness.md
+         |
+      GAL runtime
+         |
+         v
+.gal/context/* generated views
 ```
 
-Generated files under `.gal/context/` are derived views and must not be edited directly by the AI.
+### GAL Core
+Owns methodology: evidence semantics, intake, requirements discipline, review gates, question lifecycle, readiness, and canonical vocabulary.
+
+### Host Adapter Contract
+Defines what an integration must preserve and how missing host capabilities are reported.
+
+### Host Adapter
+Maps a specific execution environment to GAL without changing GAL semantics.
+
+### Deterministic runtime
+Owns state initialization, generated-view synchronization, readiness calculation, and validation.
+
+## Canonical state
+`.gal/state/project-state.json` is the single writable source of GAL project state. `.gal/context/*` is generated/read-only to AI.
+
+## Host vs provider
+GAL models the execution environment as the **host** and records the underlying company as **provider** metadata. This avoids coupling GAL to vendor product structures.
 
 ## Runtime vs Test Suite
-
-As of v0.4.7, GAL is split into two packages:
-
-### Runtime
-Contains:
-- steering
-- canonical-state templates
-- Kiro adapter
-- PowerShell runtime
-- runtime documentation
-- schema
-
-### Test Suite
-Contains:
-- ExpPay regression fixture
-- named regression cases
-- expected results
-- testing instructions
-
-The test suite must remain outside the runtime project during blind regression testing.
-
-## State vocabulary
-
-### GAL mode
-- UNSET
-- QUICK
-- STANDARD
-- DEEP
-
-### Task mode
-- EXPLORE
-- DRAFT
-- REVIEW
-
-### Intake status
-- NOT_STARTED
-- IN_PROGRESS
-- SUFFICIENT
-- SUFFICIENT_WITH_GAPS
-
-### Phase
-- GUIDE
-- ALIGN
-- LEAD
-
-### Readiness
-- READY
-- READY_WITH_GAPS
-- NOT_READY
-
-Host-specific terms must be mapped into GAL semantics instead of being written directly into canonical state.
+Regression fixtures and expected results remain outside the runtime package during blind conformance testing.
