@@ -2,6 +2,9 @@
 
 Kiro is a GAL host. GAL Core and the Host Adapter Contract are authoritative.
 
+## Startup
+Before applying these adapter rules, read `runtime/steering/gal-core.md`, `runtime/steering/gal-intake.md`, `runtime/steering/gal-requirements.md`, and `runtime/steering/gal-review.md` (or the corresponding `steering/` paths in an installed runtime project). GAL Core remains authoritative.
+
 ## State discipline
 - write GAL state only to `.gal/state/project-state.json`
 - never directly edit `.gal/context/*`
