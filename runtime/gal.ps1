@@ -69,6 +69,7 @@ function RecalcReadiness {
  $active=@($x.open_questions | Where-Object {
    $_.question_type -eq "REQUIRED_CLARIFICATION" -and
    $_.priority -eq "IMPORTANT" -and
+   $_.status -eq "OPEN" -and
    $_.disposition -eq "ACTIVE"
  }).Count
 
@@ -76,10 +77,46 @@ function RecalcReadiness {
  $a=$x.artifacts.requirements
  $ok=$a.exists -and $a.gal_scrubbed -and $a.reconciled -and $a.provenance_validated -and $a.state_validated -and $x.last_validation.executed -and $x.last_validation.passed
 
- $x.readiness.discovery.status=if($x.project_name -ne "Uninitialized Project"){if($active){"READY_WITH_GAPS"}else{"READY"}}else{"NOT_READY"}
- $x.readiness.stakeholder_review.status=if($ok){if($active -or $blocking){"READY_WITH_GAPS"}else{"READY"}}else{"NOT_READY"}
- $x.readiness.development.status=if($ok -and !$blocking){"READY_WITH_GAPS"}else{"NOT_READY"}
- $x.readiness.qa_test_design.status=if($ok){"READY_WITH_GAPS"}else{"NOT_READY"}
+ if($x.project_name -eq "Uninitialized Project"){
+   $x.readiness.discovery.status="NOT_READY"
+   $x.readiness.discovery.reason="No project context yet"
+ } elseif($active){
+   $x.readiness.discovery.status="READY_WITH_GAPS"
+   $x.readiness.discovery.reason="$active active important clarification question(s)"
+ } else {
+   $x.readiness.discovery.status="READY"
+   $x.readiness.discovery.reason="Project context established with no active important clarification questions"
+ }
+
+ if(!$ok){
+   $x.readiness.stakeholder_review.status="NOT_READY"
+   $x.readiness.stakeholder_review.reason="Requirements artifact has not passed all review gates"
+ } elseif($active -or $blocking){
+   $x.readiness.stakeholder_review.status="READY_WITH_GAPS"
+   $x.readiness.stakeholder_review.reason="$active active important clarification question(s); $blocking blocking decision-debt item(s)"
+ } else {
+   $x.readiness.stakeholder_review.status="READY"
+   $x.readiness.stakeholder_review.reason="Requirements artifact passed review gates with no active important clarifications or blocking decision debt"
+ }
+
+ if(!$ok){
+   $x.readiness.development.status="NOT_READY"
+   $x.readiness.development.reason="Requirements artifact has not passed all review gates"
+ } elseif($blocking){
+   $x.readiness.development.status="NOT_READY"
+   $x.readiness.development.reason="$blocking blocking decision-debt item(s)"
+ } else {
+   $x.readiness.development.status="READY_WITH_GAPS"
+   $x.readiness.development.reason=if($active){"Requirements artifact passed review gates; $active active important clarification question(s) remain"}else{"Requirements artifact passed review gates; development readiness remains conservative until phase-specific READY criteria are defined"}
+ }
+
+ if(!$ok){
+   $x.readiness.qa_test_design.status="NOT_READY"
+   $x.readiness.qa_test_design.reason="Requirements artifact has not passed all review gates"
+ } else {
+   $x.readiness.qa_test_design.status="READY_WITH_GAPS"
+   $x.readiness.qa_test_design.reason=if($active -or $blocking){"Requirements artifact passed review gates; $active active important clarification question(s) and $blocking blocking decision-debt item(s) remain"}else{"Requirements artifact passed review gates; QA readiness remains conservative until phase-specific READY criteria are defined"}
+ }
 
  SaveState $x
  Write-Host "GAL readiness recalculated." -ForegroundColor Green
@@ -89,16 +126,17 @@ function ValidateState {
  $x=LoadState
  $e=@()
 
- if($x.gal_version -ne "0.5.0"){$e+="Invalid gal_version"}
- if(@("UNSET","QUICK","STANDARD","DEEP") -notcontains $x.gal_mode){$e+="Invalid gal_mode"}
- if(@("EXPLORE","DRAFT","REVIEW") -notcontains $x.task_mode){$e+="Invalid task_mode"}
- if(@("NOT_STARTED","IN_PROGRESS","SUFFICIENT","SUFFICIENT_WITH_GAPS") -notcontains $x.intake_status){$e+="Invalid intake_status"}
- if(@("GUIDE","ALIGN","LEAD") -notcontains $x.current_phase){$e+="Invalid current_phase"}
-
- foreach($q in $x.open_questions){
-   if($q.status -ne "OPEN"){$e+="Invalid question status"}
-   if(@("ACTIVE","DEFERRED") -notcontains $q.disposition){$e+="Invalid question disposition"}
+ # Structural validation is owned by the canonical JSON Schema.
+ $schemaFile=Join-Path $Pkg "schemas\project-state.schema.json"
+ try {
+   $schemaOk=Test-Json -Path $SF -SchemaFile $schemaFile -ErrorAction Stop
+   if(!$schemaOk){$e+="Project state does not conform to project-state.schema.json"}
+ } catch {
+   $e+="Project state schema validation failed: $($_.Exception.Message)"
  }
+
+ # GAL semantic/cross-field invariants belong here when they cannot be
+ # expressed cleanly by JSON Schema alone.
 
  $x.last_validation.executed=$true
  $x.last_validation.timestamp=(Get-Date).ToString("o")
@@ -107,7 +145,6 @@ function ValidateState {
  $x.artifacts.requirements.state_validated=($e.Count -eq 0)
 
  if($e.Count){
-   $x.artifacts.requirements.reviewable=$false
    SaveState $x
    Write-Host "GAL state validation FAILED" -ForegroundColor Red
    exit 1

@@ -16,6 +16,12 @@ Everything under `.gal/context/` is GENERATED OUTPUT:
 - intake_status: NOT_STARTED | IN_PROGRESS | SUFFICIENT | SUFFICIENT_WITH_GAPS
 - current_phase: GUIDE | ALIGN | LEAD
 - readiness: READY | READY_WITH_GAPS | NOT_READY
+- question_type: REQUIRED_CLARIFICATION | OPTIONAL_DISCOVERY
+- question priority: IMPORTANT | LATER
+- question disposition: ACTIVE | DEFERRED
+- decision-debt priority: BLOCKING | NON_BLOCKING
+
+Decision debt is reserved for a material unresolved decision, conflict, or assumption that requires confirmation or approval and affects progression or readiness. An item is `BLOCKING` only when it prevents progression at the applicable readiness gate; otherwise use `NON_BLOCKING`. Active decision debt lives in `decision_debt`; resolved items belong in history rather than remaining active.
 
 ## Evidence integrity
 Host conventions, model priors, common software patterns, and best practices are not project authority.

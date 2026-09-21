@@ -16,7 +16,7 @@
 - compare semantic behavior, not model quality
 - record PASS / FAIL / BLOCKED per conformance control
 
-The current Codex matrix records runtime isolation as PASS and runtime-dependent/blind controls as BLOCKED pending an environment with PowerShell and an isolated Codex execution surface. v0.5.0 is not yet conformance-complete.
+Local PowerShell execution now provides deterministic runtime evidence for schema authority, validation lifecycle, readiness synchronization, decision-debt validation, generated-view synchronization, and derived reviewability. The Codex host matrix remains conservative: blind host-behavior controls stay BLOCKED until they are exercised through an isolated Codex execution surface. v0.5.0 is not yet host-conformance-complete.
 
 ## Following milestones
 ### v0.5.1

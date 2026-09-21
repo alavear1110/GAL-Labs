@@ -9,7 +9,13 @@
 - introduced host conformance suite and matrix
 - established Codex as reference development host without making Codex authoritative over GAL Core
 - added a thin repository-root Codex instruction loader while retaining the canonical adapter under `runtime/adapters/codex/`
-- aligned runtime package metadata with v0.5.0; local runtime-dependent conformance remains blocked where PowerShell is unavailable
+- aligned runtime package metadata with v0.5.0
+- made the canonical JSON Schema authoritative for structural state validation
+- formalized decision-debt vocabulary and validation
+- synchronized readiness status/reason recalculation
+- removed redundant persisted reviewability in favor of derivation from review gates and validation state
+- added named runtime regressions for schema authority, validation lifecycle, readiness synchronization, and derived reviewability
+- added standalone host-terminology regression and PowerShell trust/security guidance
 
 ## v0.4.7 — Runtime Isolation & Generated-View Discipline
 - split Runtime and Test Suite
