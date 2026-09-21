@@ -1,31 +1,33 @@
 # GAL Roadmap
 
-## Current milestone — v0.4.7
+## Current milestone — v0.5.0 Host Independence
 
-Focus:
-- runtime/test-suite separation
-- canonical-state discipline
-- generated-view discipline
-- evidence and provenance enforcement
+### Architecture
+- formal Host Adapter Contract
+- host capability manifest/schema
+- Codex reference adapter
+- Kiro adapter migrated to the same contract
+- provider-neutral GAL Core
+- host conformance matrix
 
-## Next milestone
+### Validation
+- run ExpPay against Codex
+- rerun ExpPay against Kiro
+- compare semantic behavior, not model quality
+- record PASS / FAIL / BLOCKED per conformance control
 
-Move from one large ExpPay regression toward a broader alpha suite covering multiple domains.
+## Following milestones
+### v0.5.1
+Claude Code adapter and conformance run.
 
-Candidate scenarios:
-- workflow approval system
-- customer-facing form
-- API enhancement
-- reporting/dashboard request
-- regulated or audit-sensitive workflow
-- ambiguous legacy-system change
+### v0.5.2
+Gemini CLI adapter and conformance run.
 
-## Near-term product work
+### v0.5.3
+GitHub Copilot and Cursor adapters.
 
-- formalize alpha regression suite
-- refine Kiro adapter behavior
-- reduce PowerShell trust friction without weakening execution policy
-- define distribution/signing strategy
-- improve generated artifact provenance blocks
-- formalize product documentation and release notes
-- expand steering docs for additional AI tools
+## Runtime portability
+PowerShell remains the current deterministic implementation. Cross-platform CLI/script parity is planned after the host contract stabilizes; GAL semantics must not depend on PowerShell.
+
+## Broader alpha
+Expand beyond ExpPay into multiple domains only after host-independence behavior is stable.
