@@ -1,5 +1,5 @@
 {
-  "gal_version": "0.4.7",
+  "gal_version": "0.5.0",
   "runtime_package": true,
   "test_assets_embedded": false,
   "canonical_state": ".gal/state/project-state.json",
