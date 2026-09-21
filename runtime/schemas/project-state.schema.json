@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GAL Project State v0.4.7",
+  "type": "object",
+  "required": [
+    "gal_version",
+    "gal_mode",
+    "task_mode",
+    "intake_status",
+    "current_phase"
+  ],
+  "properties": {
+    "gal_version": {
+      "const": "0.4.7"
+    },
+    "gal_mode": {
+      "enum": [
+        "UNSET",
+        "QUICK",
+        "STANDARD",
+        "DEEP"
+      ]
+    },
+    "task_mode": {
+      "enum": [
+        "EXPLORE",
+        "DRAFT",
+        "REVIEW"
+      ]
+    },
+    "intake_status": {
+      "enum": [
+        "NOT_STARTED",
+        "IN_PROGRESS",
+        "SUFFICIENT",
+        "SUFFICIENT_WITH_GAPS"
+      ]
+    },
+    "current_phase": {
+      "enum": [
+        "GUIDE",
+        "ALIGN",
+        "LEAD"
+      ]
+    }
+  }
+}

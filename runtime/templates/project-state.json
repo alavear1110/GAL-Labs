@@ -1,0 +1,63 @@
+{
+  "gal_version": "0.4.7",
+  "project_name": "Uninitialized Project",
+  "gal_mode": "UNSET",
+  "task_mode": "EXPLORE",
+  "intake_status": "NOT_STARTED",
+  "current_phase": "GUIDE",
+  "context": {
+    "objective": "",
+    "current_task": "",
+    "in_scope": [],
+    "out_of_scope": [],
+    "actors": [],
+    "systems": [],
+    "authoritative_sources": [],
+    "confirmed_business_rules": [],
+    "derived_facts": [],
+    "inferences": [],
+    "proposals": [],
+    "constraints": [],
+    "terminology": []
+  },
+  "artifacts": {
+    "requirements": {
+      "path": "",
+      "exists": false,
+      "gal_scrubbed": false,
+      "reconciled": false,
+      "provenance_validated": false,
+      "state_validated": false,
+      "reviewable": false
+    }
+  },
+  "open_questions": [],
+  "decision_debt": [],
+  "resolved_history": [],
+  "decisions": [],
+  "readiness": {
+    "discovery": {
+      "status": "NOT_READY",
+      "reason": "No project context yet"
+    },
+    "stakeholder_review": {
+      "status": "NOT_READY",
+      "reason": "No reviewable artifact yet"
+    },
+    "development": {
+      "status": "NOT_READY",
+      "reason": "Requirements not established"
+    },
+    "qa_test_design": {
+      "status": "NOT_READY",
+      "reason": "Testable behavior not established"
+    }
+  },
+  "last_validation": {
+    "executed": false,
+    "passed": false,
+    "timestamp": null,
+    "errors": []
+  },
+  "last_updated": null
+}

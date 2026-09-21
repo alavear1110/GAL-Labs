@@ -1,0 +1,10 @@
+{
+  "gal_version": "0.4.7",
+  "runtime_package": true,
+  "test_assets_embedded": false,
+  "canonical_state": ".gal/state/project-state.json",
+  "generated_context_dir": ".gal/context",
+  "generated_views_read_only_to_ai": true,
+  "validator_must_execute_before_pass_claim": true,
+  "never_bypass_execution_policy": true
+}
