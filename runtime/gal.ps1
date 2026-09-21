@@ -4,7 +4,7 @@ param(
  [string]$Command="help"
 )
 $ErrorActionPreference="Stop"
-$Version="0.4.7"
+$Version="0.5.0"
 $Root=(Get-Location).Path
 $Gal=Join-Path $Root ".gal"
 $Pkg=Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -89,7 +89,7 @@ function ValidateState {
  $x=LoadState
  $e=@()
 
- if($x.gal_version -ne "0.4.7"){$e+="Invalid gal_version"}
+ if($x.gal_version -ne "0.5.0"){$e+="Invalid gal_version"}
  if(@("UNSET","QUICK","STANDARD","DEEP") -notcontains $x.gal_mode){$e+="Invalid gal_mode"}
  if(@("EXPLORE","DRAFT","REVIEW") -notcontains $x.task_mode){$e+="Invalid task_mode"}
  if(@("NOT_STARTED","IN_PROGRESS","SUFFICIENT","SUFFICIENT_WITH_GAPS") -notcontains $x.intake_status){$e+="Invalid intake_status"}
