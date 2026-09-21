@@ -58,6 +58,13 @@ Never attribute a proposition to the user, stakeholder, source, or authority unl
 
 Absence is not negative evidence. Silence, `not defined`, or lack of a supplied rule means the proposition remains unknown; it does not establish that no such rule applies.
 
+### Evidence-safe rule wording
+State only the behavior and consequence established by the evidence. A supported business rule establishes the condition that must be evaluated or applied; it does not automatically establish a specific enforcement mechanism or system response.
+
+For example, `expenses must be submitted within 60 days` supports a 60-day submission rule and may require the relevant dates to be available for evaluation. It does **not** by itself support claims that the system rejects, blocks, prevents, warns on, or escalates a late submission. Until evidence establishes that consequence, describe the requirement as `the 60-day rule must be evaluated/applied` and classify any proposed enforcement behavior separately.
+
+Use enforcement verbs such as `reject`, `block`, `prevent`, `disable`, `escalate`, or `auto-approve` only when that exact behavior is supported or when it is explicitly labeled `PROPOSED`. Do not silently convert a policy constraint into a system behavior.
+
 ## Validation truth
 Never claim validation passed unless the deterministic validator actually executed and returned PASS.
 
