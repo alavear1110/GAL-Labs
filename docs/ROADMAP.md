@@ -1,31 +1,28 @@
 # GAL Roadmap
 
-## Current milestone — v0.5.0 Host Independence
+## Current milestone — v0.5.1 Core Hardening
 
-### Architecture
-- formal Host Adapter Contract
-- host capability manifest/schema
-- Codex reference adapter
-- Kiro adapter migrated to the same contract
-- provider-neutral GAL Core
-- host conformance matrix
+The isolated Codex ExpPay run completed the v0.5.0 reference-host conformance baseline. v0.5.1 hardens GAL Core from findings observed during that run.
+
+### Core hardening
+- phase-sensitive decision-debt blocking by readiness gate
+- explicit question-to-decision-debt linkage
+- stronger operational guidance for legitimate DERIVED facts
+- evidence-safe wording when a rule is established but its enforcement behavior is unresolved
 
 ### Validation
-- run ExpPay against Codex
-- rerun ExpPay against Kiro
-- compare semantic behavior, not model quality
-- record PASS / FAIL / BLOCKED per conformance control
-
-Local PowerShell execution now provides deterministic runtime evidence for schema authority, validation lifecycle, readiness synchronization, decision-debt validation, generated-view synchronization, and derived reviewability. The Codex host matrix remains conservative: blind host-behavior controls stay BLOCKED until they are exercised through an isolated Codex execution surface. v0.5.0 is not yet host-conformance-complete.
+- add deterministic regression coverage for stage-specific blocking
+- verify a debt item can block development without blocking discovery or stakeholder review
+- preserve truthful validator/readiness state transitions
 
 ## Following milestones
-### v0.5.1
+### v0.5.2
 Claude Code adapter and conformance run.
 
-### v0.5.2
+### v0.5.3
 Gemini CLI adapter and conformance run.
 
-### v0.5.3
+### v0.5.4
 GitHub Copilot and Cursor adapters.
 
 ## Runtime portability
