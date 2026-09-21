@@ -1,0 +1,238 @@
+{
+  "gal_version": "0.5.0",
+  "project_name": "ExpPay",
+  "gal_mode": "STANDARD",
+  "task_mode": "REVIEW",
+  "intake_status": "SUFFICIENT_WITH_GAPS",
+  "current_phase": "ALIGN",
+  "context": {
+    "objective": "Enable employees to submit expenses in the existing employee portal for policy-based approval and Finance payment handling.",
+    "current_task": "Review the evidence-backed ExpPay requirements and resolve material workflow and policy unknowns.",
+    "in_scope": [
+      "Employee expense submission in the existing employee portal",
+      "Approval routing based on payment method and amount",
+      "Receipt threshold enforcement",
+      "QuickBooks-aligned expense categories",
+      "Rejected-expense revision and resubmission",
+      "Finance handling of corporate-card payment and out-of-pocket payroll reimbursement",
+      "60-day submission rule"
+    ],
+    "out_of_scope": [],
+    "actors": [
+      "Employee — submits expenses and may revise/resubmit rejected expenses",
+      "Direct manager — approves expenses when required by the supplied rules",
+      "Next-level manager — approves expenses of $101 or more",
+      "Finance — handles reimbursement and uses QuickBooks expense types for tax reporting"
+    ],
+    "systems": [
+      "Existing employee portal",
+      "QuickBooks (expense types are the category authority; interface is unknown)",
+      "Payroll (out-of-pocket reimbursement destination; interface is unknown)",
+      "Corporate-card payment process (vendor-neutral; interface is unknown)"
+    ],
+    "authoritative_sources": [
+      "E-001: stakeholder opening statement supplied in this exercise",
+      "E-002: stakeholder follow-up answers supplied in this exercise"
+    ],
+    "confirmed_business_rules": [
+      "Employees submit expenses in the existing employee portal; managers approve them; Finance handles reimbursement.",
+      "Corporate-card expenses of $25 or less are automatically approved.",
+      "Corporate-card expenses from $26 through $100 require the employee's direct manager.",
+      "Corporate-card expenses of $101 or more require the direct manager and next-level manager.",
+      "Non-corporate-card expenses always require the direct manager and also require the next-level manager at $101 or more.",
+      "Expense categories mirror QuickBooks expense types used by Finance for tax reporting; no additional category-specific limits are defined.",
+      "Receipts are required for expenses of $26 or more.",
+      "Corporate-card expenses are paid directly to the card vendor, and requirements remain vendor-neutral.",
+      "Approved out-of-pocket reimbursements use the employee's next scheduled payroll deposit.",
+      "Rejected expenses can be revised and resubmitted.",
+      "Expenses must be submitted within 60 days."
+    ],
+    "derived_facts": [
+      "Payment method and amount must be available to apply approval and receipt rules.",
+      "A non-corporate-card expense under $101 has only the stated direct-manager approval requirement.",
+      "A receipt is not required at $25 or less because the stated required threshold starts at $26."
+    ],
+    "inferences": [],
+    "proposals": [],
+    "constraints": [
+      "Use the existing employee portal for employee submission.",
+      "Keep corporate-card requirements vendor-neutral.",
+      "Mirror QuickBooks expense types for Finance tax reporting."
+    ],
+    "terminology": [
+      "Corporate-card expense — an expense paid using a corporate card.",
+      "Out-of-pocket expense — an expense not paid using a corporate card and reimbursed through payroll.",
+      "Direct manager — the submitting employee’s direct manager.",
+      "Next-level manager — the manager above the employee’s direct manager."
+    ]
+  },
+  "artifacts": {
+    "requirements": {
+      "path": ".gal/artifacts/requirements.md",
+      "exists": true,
+      "gal_scrubbed": true,
+      "reconciled": true,
+      "provenance_validated": true,
+      "state_validated": false
+    }
+  },
+  "open_questions": [
+    {
+      "id": "Q-001",
+      "question": "Which date starts the 60-day submission period, and is the 60th day inclusive?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-002",
+      "question": "Which currency governs the dollar thresholds, and how are conversion and rounding handled for other currencies?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-003",
+      "question": "Must direct-manager approval precede next-level-manager approval, and what happens after either manager rejects?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-004",
+      "question": "How are direct and next-level managers resolved, including vacancies, unavailable managers, and delegation?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-005",
+      "question": "What authoritative QuickBooks expense-type list and update process must ExpPay mirror?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-006",
+      "question": "What payroll cutoff/calendar behavior applies when approval occurs near or after a scheduled deposit?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-007",
+      "question": "On resubmission, which prior approvals remain valid, if any?",
+      "question_type": "REQUIRED_CLARIFICATION",
+      "priority": "IMPORTANT",
+      "status": "OPEN",
+      "disposition": "ACTIVE"
+    },
+    {
+      "id": "Q-008",
+      "question": "Which receipt formats and validation criteria are acceptable?",
+      "question_type": "OPTIONAL_DISCOVERY",
+      "priority": "LATER",
+      "status": "OPEN",
+      "disposition": "DEFERRED"
+    },
+    {
+      "id": "Q-009",
+      "question": "What employee/manager/Finance status visibility, notifications, audit retention, and reporting are required?",
+      "question_type": "OPTIONAL_DISCOVERY",
+      "priority": "LATER",
+      "status": "OPEN",
+      "disposition": "DEFERRED"
+    },
+    {
+      "id": "Q-010",
+      "question": "What interfaces connect the portal, hierarchy, category source, card-payment process, and payroll?",
+      "question_type": "OPTIONAL_DISCOVERY",
+      "priority": "LATER",
+      "status": "OPEN",
+      "disposition": "DEFERRED"
+    }
+  ],
+  "decision_debt": [
+    {
+      "id": "DD-001",
+      "decision": "Define the 60-day measurement date and inclusive boundary.",
+      "priority": "BLOCKING"
+    },
+    {
+      "id": "DD-002",
+      "decision": "Define currency, conversion, and rounding semantics for thresholds.",
+      "priority": "BLOCKING"
+    },
+    {
+      "id": "DD-003",
+      "decision": "Define ordering and rejection behavior for two-manager approval.",
+      "priority": "BLOCKING"
+    },
+    {
+      "id": "DD-004",
+      "decision": "Define manager resolution, delegation, and unavailable-manager behavior.",
+      "priority": "BLOCKING"
+    },
+    {
+      "id": "DD-005",
+      "decision": "Approve the authoritative QuickBooks expense-type list and update process.",
+      "priority": "BLOCKING"
+    },
+    {
+      "id": "DD-006",
+      "decision": "Define payroll cutoff/calendar interpretation of the next scheduled deposit.",
+      "priority": "BLOCKING"
+    },
+    {
+      "id": "DD-007",
+      "decision": "Define whether approvals reset when a rejected expense is revised and resubmitted.",
+      "priority": "BLOCKING"
+    }
+  ],
+  "resolved_history": [],
+  "decisions": [
+    {
+      "id": "D-001",
+      "decision": "Use ExpPay as the project name.",
+      "classification": "SUPPORTED",
+      "evidence": "E-001"
+    },
+    {
+      "id": "D-002",
+      "decision": "Keep corporate-card requirements vendor-neutral.",
+      "classification": "SUPPORTED",
+      "evidence": "E-002"
+    }
+  ],
+  "readiness": {
+    "discovery": {
+      "status": "READY_WITH_GAPS",
+      "reason": "7 active important clarification question(s)"
+    },
+    "stakeholder_review": {
+      "status": "NOT_READY",
+      "reason": "Requirements artifact has not passed all review gates"
+    },
+    "development": {
+      "status": "NOT_READY",
+      "reason": "Requirements artifact has not passed all review gates"
+    },
+    "qa_test_design": {
+      "status": "NOT_READY",
+      "reason": "Requirements artifact has not passed all review gates"
+    }
+  },
+  "last_validation": {
+    "executed": false,
+    "passed": false,
+    "timestamp": null,
+    "errors": []
+  },
+  "last_updated": "2026-09-21T00:00:00Z"
+}
