@@ -27,3 +27,7 @@ GAL must not claim state validation passed unless `validate-state` actually exec
 ## Blind-test rule
 
 Keep the test suite outside the runtime project. The host AI must not have access to expected answers during a blind regression run.
+
+## Current Codex execution status
+
+The 2026-09-21 local run confirmed runtime/test-suite isolation. Runtime-dependent and blind behavioral controls were recorded as BLOCKED because the environment provided neither PowerShell nor a separate Codex execution surface. They must be rerun before v0.5.0 conformance can be claimed.
