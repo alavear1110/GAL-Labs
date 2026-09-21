@@ -76,10 +76,11 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id","decision","priority","blocks"],
+        "required": ["id","decision","source_question_id","priority","blocks"],
         "properties": {
           "id": { "type": "string", "minLength": 1 },
           "decision": { "type": "string", "minLength": 1 },
+          "source_question_id": { "type": ["string","null"], "minLength": 1 },
           "priority": { "enum": ["BLOCKING","NON_BLOCKING"] },
           "blocks": {
             "type": "array",
