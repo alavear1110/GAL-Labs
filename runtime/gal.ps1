@@ -4,7 +4,7 @@ param(
  [string]$Command="help"
 )
 $ErrorActionPreference="Stop"
-$Version="0.5.0"
+$Version="0.5.1"
 $Root=(Get-Location).Path
 $Gal=Join-Path $Root ".gal"
 $Pkg=Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -73,13 +73,21 @@ function RecalcReadiness {
    $_.disposition -eq "ACTIVE"
  }).Count
 
- $blocking=@($x.decision_debt | Where-Object {$_.priority -eq "BLOCKING"}).Count
+ $blockingByStage=@{}
+ foreach($stage in @("discovery","stakeholder_review","development","qa_test_design")){
+   $blockingByStage[$stage]=@($x.decision_debt | Where-Object {
+     $_.priority -eq "BLOCKING" -and @($_.blocks) -contains $stage
+   }).Count
+ }
  $a=$x.artifacts.requirements
  $ok=$a.exists -and $a.gal_scrubbed -and $a.reconciled -and $a.provenance_validated -and $a.state_validated -and $x.last_validation.executed -and $x.last_validation.passed
 
  if($x.project_name -eq "Uninitialized Project"){
    $x.readiness.discovery.status="NOT_READY"
    $x.readiness.discovery.reason="No project context yet"
+ } elseif($blockingByStage["discovery"]){
+   $x.readiness.discovery.status="NOT_READY"
+   $x.readiness.discovery.reason="$($blockingByStage["discovery"]) decision-debt item(s) block discovery"
  } elseif($active){
    $x.readiness.discovery.status="READY_WITH_GAPS"
    $x.readiness.discovery.reason="$active active important clarification question(s)"
@@ -91,9 +99,12 @@ function RecalcReadiness {
  if(!$ok){
    $x.readiness.stakeholder_review.status="NOT_READY"
    $x.readiness.stakeholder_review.reason="Requirements artifact has not passed all review gates"
- } elseif($active -or $blocking){
+ } elseif($blockingByStage["stakeholder_review"]){
+   $x.readiness.stakeholder_review.status="NOT_READY"
+   $x.readiness.stakeholder_review.reason="$($blockingByStage["stakeholder_review"]) decision-debt item(s) block stakeholder review"
+ } elseif($active){
    $x.readiness.stakeholder_review.status="READY_WITH_GAPS"
-   $x.readiness.stakeholder_review.reason="$active active important clarification question(s); $blocking blocking decision-debt item(s)"
+   $x.readiness.stakeholder_review.reason="$active active important clarification question(s)"
  } else {
    $x.readiness.stakeholder_review.status="READY"
    $x.readiness.stakeholder_review.reason="Requirements artifact passed review gates with no active important clarifications or blocking decision debt"
@@ -102,9 +113,9 @@ function RecalcReadiness {
  if(!$ok){
    $x.readiness.development.status="NOT_READY"
    $x.readiness.development.reason="Requirements artifact has not passed all review gates"
- } elseif($blocking){
+ } elseif($blockingByStage["development"]){
    $x.readiness.development.status="NOT_READY"
-   $x.readiness.development.reason="$blocking blocking decision-debt item(s)"
+   $x.readiness.development.reason="$($blockingByStage["development"]) decision-debt item(s) block development"
  } else {
    $x.readiness.development.status="READY_WITH_GAPS"
    $x.readiness.development.reason=if($active){"Requirements artifact passed review gates; $active active important clarification question(s) remain"}else{"Requirements artifact passed review gates; development readiness remains conservative until phase-specific READY criteria are defined"}
@@ -115,7 +126,7 @@ function RecalcReadiness {
    $x.readiness.qa_test_design.reason="Requirements artifact has not passed all review gates"
  } else {
    $x.readiness.qa_test_design.status="READY_WITH_GAPS"
-   $x.readiness.qa_test_design.reason=if($active -or $blocking){"Requirements artifact passed review gates; $active active important clarification question(s) and $blocking blocking decision-debt item(s) remain"}else{"Requirements artifact passed review gates; QA readiness remains conservative until phase-specific READY criteria are defined"}
+   $x.readiness.qa_test_design.reason=if($blockingByStage["qa_test_design"]){"Requirements artifact passed review gates; $($blockingByStage["qa_test_design"]) decision-debt item(s) block complete QA test design"}elseif($active){"Requirements artifact passed review gates; $active active important clarification question(s) remain"}else{"Requirements artifact passed review gates; QA readiness remains conservative until phase-specific READY criteria are defined"}
  }
 
  SaveState $x
