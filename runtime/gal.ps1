@@ -126,24 +126,17 @@ function ValidateState {
  $x=LoadState
  $e=@()
 
- if($x.gal_version -ne "0.5.0"){$e+="Invalid gal_version"}
- if(@("UNSET","QUICK","STANDARD","DEEP") -notcontains $x.gal_mode){$e+="Invalid gal_mode"}
- if(@("EXPLORE","DRAFT","REVIEW") -notcontains $x.task_mode){$e+="Invalid task_mode"}
- if(@("NOT_STARTED","IN_PROGRESS","SUFFICIENT","SUFFICIENT_WITH_GAPS") -notcontains $x.intake_status){$e+="Invalid intake_status"}
- if(@("GUIDE","ALIGN","LEAD") -notcontains $x.current_phase){$e+="Invalid current_phase"}
-
- foreach($q in $x.open_questions){
-   if(@("REQUIRED_CLARIFICATION","OPTIONAL_DISCOVERY") -notcontains $q.question_type){$e+="Invalid question type"}
-   if(@("IMPORTANT","LATER") -notcontains $q.priority){$e+="Invalid question priority"}
-   if($q.status -ne "OPEN"){$e+="Invalid question status"}
-   if(@("ACTIVE","DEFERRED") -notcontains $q.disposition){$e+="Invalid question disposition"}
+ # Structural validation is owned by the canonical JSON Schema.
+ $schemaFile=Join-Path $Pkg "schemas\project-state.schema.json"
+ try {
+   $schemaOk=Test-Json -Path $SF -SchemaFile $schemaFile -ErrorAction Stop
+   if(!$schemaOk){$e+="Project state does not conform to project-state.schema.json"}
+ } catch {
+   $e+="Project state schema validation failed: $($_.Exception.Message)"
  }
 
- foreach($d in $x.decision_debt){
-   if([string]::IsNullOrWhiteSpace([string]$d.id)){$e+="Invalid decision debt id"}
-   if([string]::IsNullOrWhiteSpace([string]$d.decision)){$e+="Invalid decision debt decision"}
-   if(@("BLOCKING","NON_BLOCKING") -notcontains $d.priority){$e+="Invalid decision debt priority"}
- }
+ # GAL semantic/cross-field invariants belong here when they cannot be
+ # expressed cleanly by JSON Schema alone.
 
  $x.last_validation.executed=$true
  $x.last_validation.timestamp=(Get-Date).ToString("o")
