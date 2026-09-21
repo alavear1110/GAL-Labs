@@ -1,6 +1,6 @@
-# GAL Test Suite v0.4.7
+# GAL Test Suite v0.5.0
 
-Keep this directory outside the runtime Kiro project during blind testing.
+Keep this directory outside the runtime project during blind host testing.
 
 It contains:
 - baseline scenarios
