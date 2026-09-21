@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "GAL Project State v0.5.0",
+  "title": "GAL Project State v0.5.1",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -9,7 +9,7 @@
     "resolved_history", "decisions", "readiness", "last_validation", "last_updated"
   ],
   "properties": {
-    "gal_version": { "const": "0.5.0" },
+    "gal_version": { "const": "0.5.1" },
     "project_name": { "type": "string" },
     "gal_mode": { "enum": ["UNSET", "QUICK", "STANDARD", "DEEP"] },
     "task_mode": { "enum": ["EXPLORE", "DRAFT", "REVIEW"] },
@@ -76,11 +76,16 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id","decision","priority"],
+        "required": ["id","decision","priority","blocks"],
         "properties": {
           "id": { "type": "string", "minLength": 1 },
           "decision": { "type": "string", "minLength": 1 },
-          "priority": { "enum": ["BLOCKING","NON_BLOCKING"] }
+          "priority": { "enum": ["BLOCKING","NON_BLOCKING"] },
+          "blocks": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": { "enum": ["discovery","stakeholder_review","development","qa_test_design"] }
+          }
         }
       }
     },
