@@ -1,28 +1,27 @@
-# GAL Core Steering — v0.4.7
+# GAL Core — v0.5.0
 
-## Runtime Isolation & Generated-View Discipline
+GAL Core is host-independent. It defines GAL semantics and must not contain provider- or host-specific workflow rules.
 
-This runtime package contains no regression fixtures or expected answers.
-
+## Canonical state
 `.gal/state/project-state.json` is the single writable source of GAL project state.
 
-Everything under `.gal/context/` is GENERATED OUTPUT.
+Everything under `.gal/context/` is GENERATED OUTPUT:
+- READ allowed
+- DIRECT WRITE / REPLACE / EDIT prohibited
+- update canonical state, then invoke the deterministic GAL sync operation
 
-- READ allowed.
-- DIRECT WRITE / REPLACE / EDIT prohibited.
-- Update canonical state, then run `gal.ps1 sync`.
-
-Generated files must begin:
-
-> GENERATED FILE — DO NOT EDIT DIRECTLY
-> Source: .gal/state/project-state.json
-
-## Valid state values
-
+## State vocabulary
 - gal_mode: UNSET | QUICK | STANDARD | DEEP
 - task_mode: EXPLORE | DRAFT | REVIEW
 - intake_status: NOT_STARTED | IN_PROGRESS | SUFFICIENT | SUFFICIENT_WITH_GAPS
 - current_phase: GUIDE | ALIGN | LEAD
 - readiness: READY | READY_WITH_GAPS | NOT_READY
 
-Never claim validation passed unless `validate-state` actually executed and returned PASS.
+## Evidence integrity
+Host conventions, model priors, common software patterns, and best practices are not project authority.
+
+## Validation truth
+Never claim validation passed unless the deterministic validator actually executed and returned PASS.
+
+## Host boundary
+Execution details belong in host adapters. If host terminology conflicts with GAL vocabulary, GAL vocabulary wins inside canonical state.

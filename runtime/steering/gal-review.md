@@ -1,4 +1,4 @@
-# GAL Review — v0.4.7
+# GAL Review — v0.5.0
 
 Hard gates:
 1. evidence audit

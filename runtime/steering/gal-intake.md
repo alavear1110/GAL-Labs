@@ -1,4 +1,4 @@
-# GAL Intake — v0.4.7
+# GAL Intake — v0.5.0
 
 Persist every tracked question in canonical state before presenting it.
 
@@ -12,5 +12,5 @@ Never edit `.gal/context/*` directly.
 
 After state changes:
 1. update `.gal/state/project-state.json`
-2. run `.\gal.ps1 sync`
+2. invoke the deterministic GAL `sync` operation through the host adapter
 3. read generated views if verification is needed

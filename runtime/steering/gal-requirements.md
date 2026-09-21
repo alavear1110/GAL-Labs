@@ -1,4 +1,4 @@
-# GAL Requirements — v0.4.7
+# GAL Requirements — v0.5.0
 
 Preserve these controls:
 - explicit evidence -> SUPPORTED
