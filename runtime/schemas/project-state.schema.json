@@ -2,46 +2,112 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "GAL Project State v0.5.0",
   "type": "object",
+  "additionalProperties": false,
   "required": [
-    "gal_version",
-    "gal_mode",
-    "task_mode",
-    "intake_status",
-    "current_phase"
+    "gal_version", "project_name", "gal_mode", "task_mode", "intake_status",
+    "current_phase", "context", "artifacts", "open_questions", "decision_debt",
+    "resolved_history", "decisions", "readiness", "last_validation", "last_updated"
   ],
   "properties": {
-    "gal_version": {
-      "const": "0.5.0"
+    "gal_version": { "const": "0.5.0" },
+    "project_name": { "type": "string" },
+    "gal_mode": { "enum": ["UNSET", "QUICK", "STANDARD", "DEEP"] },
+    "task_mode": { "enum": ["EXPLORE", "DRAFT", "REVIEW"] },
+    "intake_status": { "enum": ["NOT_STARTED", "IN_PROGRESS", "SUFFICIENT", "SUFFICIENT_WITH_GAPS"] },
+    "current_phase": { "enum": ["GUIDE", "ALIGN", "LEAD"] },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["objective","current_task","in_scope","out_of_scope","actors","systems","authoritative_sources","confirmed_business_rules","derived_facts","inferences","proposals","constraints","terminology"],
+      "properties": {
+        "objective": { "type": "string" },
+        "current_task": { "type": "string" },
+        "in_scope": { "type": "array" },
+        "out_of_scope": { "type": "array" },
+        "actors": { "type": "array" },
+        "systems": { "type": "array" },
+        "authoritative_sources": { "type": "array" },
+        "confirmed_business_rules": { "type": "array" },
+        "derived_facts": { "type": "array" },
+        "inferences": { "type": "array" },
+        "proposals": { "type": "array" },
+        "constraints": { "type": "array" },
+        "terminology": { "type": "array" }
+      }
     },
-    "gal_mode": {
-      "enum": [
-        "UNSET",
-        "QUICK",
-        "STANDARD",
-        "DEEP"
-      ]
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requirements"],
+      "properties": {
+        "requirements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path","exists","gal_scrubbed","reconciled","provenance_validated","state_validated","reviewable"],
+          "properties": {
+            "path": { "type": "string" },
+            "exists": { "type": "boolean" },
+            "gal_scrubbed": { "type": "boolean" },
+            "reconciled": { "type": "boolean" },
+            "provenance_validated": { "type": "boolean" },
+            "state_validated": { "type": "boolean" },
+            "reviewable": { "type": "boolean" }
+          }
+        }
+      }
     },
-    "task_mode": {
-      "enum": [
-        "EXPLORE",
-        "DRAFT",
-        "REVIEW"
-      ]
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","question","question_type","priority","status","disposition"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "question": { "type": "string", "minLength": 1 },
+          "question_type": { "enum": ["REQUIRED_CLARIFICATION","OPTIONAL_DISCOVERY"] },
+          "priority": { "enum": ["IMPORTANT","LATER"] },
+          "status": { "const": "OPEN" },
+          "disposition": { "enum": ["ACTIVE","DEFERRED"] }
+        }
+      }
     },
-    "intake_status": {
-      "enum": [
-        "NOT_STARTED",
-        "IN_PROGRESS",
-        "SUFFICIENT",
-        "SUFFICIENT_WITH_GAPS"
-      ]
+    "decision_debt": { "type": "array" },
+    "resolved_history": { "type": "array" },
+    "decisions": { "type": "array" },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["discovery","stakeholder_review","development","qa_test_design"],
+      "properties": {
+        "discovery": { "$ref": "#/$defs/readinessStage" },
+        "stakeholder_review": { "$ref": "#/$defs/readinessStage" },
+        "development": { "$ref": "#/$defs/readinessStage" },
+        "qa_test_design": { "$ref": "#/$defs/readinessStage" }
+      }
     },
-    "current_phase": {
-      "enum": [
-        "GUIDE",
-        "ALIGN",
-        "LEAD"
-      ]
+    "last_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["executed","passed","timestamp","errors"],
+      "properties": {
+        "executed": { "type": "boolean" },
+        "passed": { "type": "boolean" },
+        "timestamp": { "type": ["string","null"] },
+        "errors": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "last_updated": { "type": ["string","null"] }
+  },
+  "$defs": {
+    "readinessStage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status","reason"],
+      "properties": {
+        "status": { "enum": ["READY","READY_WITH_GAPS","NOT_READY"] },
+        "reason": { "type": "string" }
+      }
     }
   }
 }
