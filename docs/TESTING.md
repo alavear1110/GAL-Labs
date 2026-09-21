@@ -36,6 +36,9 @@ The latest validation result must truthfully replace prior PASS or FAIL metadata
 ### READINESS-001 — Status/reason synchronization
 Readiness status and reason must be recalculated together from the same canonical facts.
 
+### READINESS-002 — Content readiness / validation separation
+Stakeholder-review readiness follows content, targeted debt, and active-question state independently of deterministic validation, while development and QA remain validation-gated.
+
 ### STATE-006 — Derived reviewability
 Reviewability is derived from requirements gates and validation state, not persisted as an independent mutable boolean.
 
