@@ -137,6 +137,30 @@ function ValidateState {
  $x=LoadState
  $e=@()
 
+ $configFile=Join-Path $Gal "state\config.json"
+ $config=$null
+ if(!(Test-Path $configFile)){
+   $e+="GAL config is missing: .gal/state/config.json"
+ } else {
+   try {
+     $config=Get-Content $configFile -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+   } catch {
+     $e+="GAL config could not be read or parsed: $($_.Exception.Message)"
+   }
+ }
+
+ if($null -ne $config){
+   if($config.gal_version -ne $Version){
+     $e+="Config GAL version '$($config.gal_version)' does not match runtime GAL version '$Version'"
+   }
+   if($config.gal_version -ne $x.gal_version){
+     $e+="Config GAL version '$($config.gal_version)' does not match project state GAL version '$($x.gal_version)'"
+   }
+ }
+ if($x.gal_version -ne $Version){
+   $e+="Project state GAL version '$($x.gal_version)' does not match runtime GAL version '$Version'"
+ }
+
  # Structural validation is owned by the canonical JSON Schema.
  $schemaFile=Join-Path $Pkg "schemas\project-state.schema.json"
  try {
