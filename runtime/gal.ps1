@@ -145,7 +145,6 @@ function ValidateState {
  $x.artifacts.requirements.state_validated=($e.Count -eq 0)
 
  if($e.Count){
-   $x.artifacts.requirements.reviewable=$false
    SaveState $x
    Write-Host "GAL state validation FAILED" -ForegroundColor Red
    exit 1
