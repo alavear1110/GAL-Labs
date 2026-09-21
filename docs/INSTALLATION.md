@@ -1,7 +1,7 @@
 # Installation and Local Use
 
 ## Prerequisites
-- Windows PowerShell or PowerShell 7+
+- PowerShell 7 or later (required for authoritative JSON Schema validation with `Test-Json`)
 - an AI development assistant capable of reading the GAL steering files
 - a project folder where GAL can create its local `.gal/` state
 

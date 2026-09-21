@@ -2,6 +2,9 @@
 
 This directory contains the production-style GAL runtime.
 
+Runtime prerequisite: PowerShell 7 or later, including `Test-Json` support for
+authoritative JSON Schema validation.
+
 ## Runtime rules
 
 - `.gal/state/project-state.json` is canonical.
@@ -29,4 +32,5 @@ Before replacement, the original files are preserved as
 `.gal/state/project-state.v0.5.0.backup.json` and
 `.gal/state/config.v0.5.0.backup.json`. Existing backups are never overwritten.
 If post-write validation or context synchronization fails, the originals are
-restored from those backups.
+restored and the backups created by that failed attempt are removed so the
+migration can be retried. If restoration fails, recovery backups are preserved.

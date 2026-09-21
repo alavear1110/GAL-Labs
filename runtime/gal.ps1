@@ -104,8 +104,20 @@ function Migrate {
  } catch {
    $failure=$_.Exception.Message
    if($backupsCreated){
-     Copy-Item $stateBackup $SF -Force
-     Copy-Item $configBackup $configFile -Force
+     $restoreErrors=@()
+     try {Copy-Item $stateBackup $SF -Force -ErrorAction Stop}
+     catch {$restoreErrors+="project state: $($_.Exception.Message)"}
+     try {Copy-Item $configBackup $configFile -Force -ErrorAction Stop}
+     catch {$restoreErrors+="config: $($_.Exception.Message)"}
+
+     if($restoreErrors.Count){
+       throw "GAL migration failed and restoration was incomplete. Recovery backups were preserved. Migration error: $failure. Restoration error(s): $($restoreErrors -join '; ')"
+     }
+
+     # These backups belong to this attempt. Remove them only after both
+     # originals have been restored so a corrected migration can be retried.
+     try {Remove-Item $stateBackup,$configBackup -Force -ErrorAction Stop}
+     catch {throw "GAL migration failed; original v0.5.0 state and config were restored, but retry cleanup failed: $($_.Exception.Message)"}
    }
    throw "GAL migration failed; original v0.5.0 state and config were restored: $failure"
  } finally {
