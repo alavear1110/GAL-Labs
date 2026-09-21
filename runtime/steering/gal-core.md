@@ -35,6 +35,29 @@ Examples:
 ## Evidence integrity
 Host conventions, model priors, common software patterns, and best practices are not project authority.
 
+### Evidence classifications
+- `SUPPORTED`: explicitly established by supplied evidence.
+- `DERIVED`: logically unavoidable if a supported rule is to be evaluated or satisfied, even though the proposition was not stated verbatim.
+- `INFERRED`: plausible from the evidence but not logically necessary.
+- `PROPOSED`: a recommendation or design choice.
+- `UNKNOWN`: materially relevant information is absent.
+- `CONFLICT`: supplied authorities disagree.
+
+### Derived Necessity Test
+Before classifying a proposition as `DERIVED`, ask:
+
+> Could the supported requirement be satisfied without this exact proposition being true?
+
+- If **NO**, `DERIVED` is permissible. Record the supported rule that makes the proposition necessary.
+- If **YES**, the proposition is not derived. Classify it as `INFERRED`, `PROPOSED`, or `UNKNOWN` as appropriate.
+
+Do not require the source to state a necessary implementation-independent data fact verbatim before using `DERIVED`. For example, a supported rule whose outcome varies by expense amount necessarily requires the amount to be available for evaluation; `expense amount is required for rule evaluation` may therefore be `DERIVED`. The test does **not** authorize inventing UI controls, storage design, integration mechanics, actors, enforcement consequences, or other implementation choices.
+
+### Evidence provenance integrity
+Never attribute a proposition to the user, stakeholder, source, or authority unless that exact proposition is present in the supplied evidence. A logically necessary proposition remains `DERIVED`; it does not become `SUPPORTED` merely because its parent rule is supported.
+
+Absence is not negative evidence. Silence, `not defined`, or lack of a supplied rule means the proposition remains unknown; it does not establish that no such rule applies.
+
 ## Validation truth
 Never claim validation passed unless the deterministic validator actually executed and returned PASS.
 
