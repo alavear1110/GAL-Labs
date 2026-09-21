@@ -9,6 +9,9 @@ The primary baseline scenario is **ExpPay**, an employee-expense workflow used t
 ### TEST-001 — Runtime isolation
 The runtime package must not contain or expose regression fixtures or expected answers.
 
+### STATE-002 — Host terminology firewall
+Host-native workflow vocabulary must not enter GAL canonical enum fields unless it is valid GAL vocabulary.
+
 ### STATE-003 — Question persistence
 Tracked questions must be written to canonical state before they are presented as GAL-managed questions.
 
