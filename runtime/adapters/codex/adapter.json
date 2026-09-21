@@ -1,0 +1,15 @@
+{
+  "gal_adapter_contract": "1.0",
+  "host": "Codex",
+  "provider": "OpenAI",
+  "instruction_entrypoint": "AGENTS.md",
+  "capabilities": {
+    "read_files": true,
+    "write_files": true,
+    "execute_commands": true,
+    "persistent_project_instructions": true,
+    "supports_generated_view_sync": true,
+    "supports_validation_execution": true
+  },
+  "limitations": []
+}
