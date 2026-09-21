@@ -139,6 +139,12 @@ function ValidateState {
    if(@("ACTIVE","DEFERRED") -notcontains $q.disposition){$e+="Invalid question disposition"}
  }
 
+ foreach($d in $x.decision_debt){
+   if([string]::IsNullOrWhiteSpace([string]$d.id)){$e+="Invalid decision debt id"}
+   if([string]::IsNullOrWhiteSpace([string]$d.decision)){$e+="Invalid decision debt decision"}
+   if(@("BLOCKING","NON_BLOCKING") -notcontains $d.priority){$e+="Invalid decision debt priority"}
+ }
+
  $x.last_validation.executed=$true
  $x.last_validation.timestamp=(Get-Date).ToString("o")
  $x.last_validation.errors=@($e)
