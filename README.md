@@ -35,6 +35,8 @@ Host Adapter Contract
 
 See `docs/HOST-INDEPENDENCE.md` and `runtime/contracts/HOST-ADAPTER-CONTRACT.md`.
 
+Codex discovers the repository-root `AGENTS.md`, which is a thin loader for the canonical adapter source at `runtime/adapters/codex/AGENTS.md`. The loader does not duplicate or redefine GAL Core.
+
 ## Runtime discipline
 `.gal/state/project-state.json` is canonical GAL state. Files under `.gal/context/*` are generated views and must not be directly edited by the AI.
 

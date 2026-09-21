@@ -33,6 +33,7 @@ Defines what an integration must preserve and how missing host capabilities are 
 
 ### Host Adapter
 Maps a specific execution environment to GAL without changing GAL semantics.
+Host-native discovery may use a thin repository-level loader. The canonical adapter remains under `runtime/adapters/`; loaders must point to it and GAL Core rather than duplicate methodology.
 
 ### Deterministic runtime
 Owns state initialization, generated-view synchronization, readiness calculation, and validation.

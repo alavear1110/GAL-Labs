@@ -8,6 +8,8 @@
 ## Runtime setup
 Copy the contents of `runtime/` into the project you want to use with GAL.
 
+For Codex, also place the repository's thin root `AGENTS.md` in the project root. It directs Codex to `steering/` and the canonical `adapters/codex/AGENTS.md`; do not copy GAL Core text into another instruction file.
+
 From PowerShell:
 
 ```powershell
