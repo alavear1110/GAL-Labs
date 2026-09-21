@@ -16,6 +16,8 @@
 - compare semantic behavior, not model quality
 - record PASS / FAIL / BLOCKED per conformance control
 
+The current Codex matrix records runtime isolation as PASS and runtime-dependent/blind controls as BLOCKED pending an environment with PowerShell and an isolated Codex execution surface. v0.5.0 is not yet conformance-complete.
+
 ## Following milestones
 ### v0.5.1
 Claude Code adapter and conformance run.
