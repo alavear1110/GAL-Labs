@@ -1,32 +1,34 @@
 # GAL Development History
 
+## v0.5.0 — Host Independence (in development)
+- introduced GAL Host Adapter Contract v1.0
+- separated host from provider concepts
+- added adapter capability manifest schema
+- added Codex reference adapter
+- migrated Kiro toward the same contract
+- introduced host conformance suite and matrix
+- established Codex as reference development host without making Codex authoritative over GAL Core
+
 ## v0.4.7 — Runtime Isolation & Generated-View Discipline
-- split Runtime and Test Suite into separate packages
-- removed test fixtures from runtime distribution
+- split Runtime and Test Suite
+- removed regression fixtures from runtime
 - made `.gal/context/*` generated/read-only to AI
-- added DO NOT EDIT generated-view headers
-- retained state/provenance enforcement controls
+- added generated-view headers
+- retained state/provenance controls
 
 ## v0.4.6 — State & Provenance Enforcement
 - host terminology firewall
-- validator-before-claim rule
-- absence-is-not-negative-evidence rule
-- actor capability evidence rule
-- question disposition model
+- validator-before-claim
+- absence-is-not-negative-evidence
+- actor capability evidence
+- question disposition
 - canonical validation state
 
 ## v0.4.5 — Evidence Integrity
 - Derived Necessity Test
-- evidence provenance integrity
-- provenance validation gate
-- stronger outcome-vs-mechanism controls
-
-## v0.4.4 — Hardening
-- artifact reconciliation
-- stricter state validation
-- question type separated from priority
-- neutral mechanism wording
-- test fixture isolation attempt
+- provenance integrity
+- provenance gate
+- outcome-vs-mechanism controls
 
 ## Earlier v0.4.x
-Established adaptive intake, canonical state, evidence promotion, open questions, decision debt, and Kiro-native spec governance.
+Established adaptive intake, canonical state, evidence promotion, open questions, decision debt, and host-governed requirements workflows.
