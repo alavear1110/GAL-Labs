@@ -148,6 +148,12 @@ function ValidateState {
 
  # GAL semantic/cross-field invariants belong here when they cannot be
  # expressed cleanly by JSON Schema alone.
+ $questionIds=@($x.open_questions | ForEach-Object {$_.id})
+ foreach($d in @($x.decision_debt)){
+   if($null -ne $d.source_question_id -and $d.source_question_id -notin $questionIds){
+     $e+="Decision debt '$($d.id)' references source question '$($d.source_question_id)' that is not present in open_questions"
+   }
+ }
 
  $x.last_validation.executed=$true
  $x.last_validation.timestamp=(Get-Date).ToString("o")
