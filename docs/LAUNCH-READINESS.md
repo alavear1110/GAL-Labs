@@ -9,10 +9,9 @@ This checklist defines the engineering and packaging gates for the first public 
 - [x] PowerShell 7+ validation contract established
 - [x] Explicit v0.5.0 to v0.5.1 migration implemented
 - [x] Codex reference-host blind ExpPay baseline completed
-- [ ] Claude Code v0.5.2 blind conformance completed or explicitly deferred from the first alpha
 - [ ] Release candidate installed into a clean project from public instructions
 - [ ] Clean-project smoke test completes init, sync, status, validation, and readiness recalculation
-- [ ] Public package contents reviewed to ensure regression answer keys are not shipped as runtime material
+- [ ] Public package contains runtime/user material only; internal tests, conformance scenarios, expected answers, and test outputs are absent
 
 ## Public documentation
 - [x] Product overview
@@ -22,14 +21,14 @@ This checklist defines the engineering and packaging gates for the first public 
 - [x] Security guidance
 - [x] Development history / changelog
 - [x] Roadmap
-- [ ] Quick-start path verified from a clean checkout
+- [ ] Quick-start path verified from the staged public package
 - [ ] One public, non-answer-key example demonstrating Guide → Align → Lead
 - [ ] Supported-host table reflects observed conformance status rather than planned capability
 - [ ] Known alpha limitations are stated explicitly
 
 ## Release integrity
 - [ ] Runtime version, config template, state template, schema, README, and release notes agree on the release version
-- [ ] No development-only fixture or conformance answer key is reachable from the distributable runtime package
+- [ ] No internal test fixture, conformance scenario, expected answer, grading criterion, transcript, or prior host test output is present in the distributable runtime package
 - [ ] Migration and backup behavior rechecked from a clean v0.5.0 fixture
 - [ ] Generated views confirmed reproducible from canonical state
 - [ ] Failed or unavailable validation remains truthfully represented
@@ -43,5 +42,8 @@ These items are intentionally separate from runtime correctness.
 - [ ] Decide versioning and release-note convention for public downloads
 - [ ] Prepare a concise launch page explaining the problem GAL solves, Guide · Align · Lead, supported hosts, and alpha limitations
 
+## Launch gate
+The release gate is the public-package boundary plus a successful clean-package smoke test. Internal engineering assets remain in the development repository and are never part of the user deliverable.
+
 ## Post-launch
-The first alpha does not require every planned adapter. Gemini CLI, GitHub Copilot, Cursor, broader domain regressions, and cross-platform runtime parity may remain roadmap work if the release notes state that clearly.
+Additional adapters and broader regressions can ship after the first release. A host is advertised as supported only after its own observed conformance is complete.
