@@ -11,12 +11,12 @@ A provider and a host are not the same concept. OpenAI may expose multiple hosts
 ## Reference host
 Codex is the primary development/reference host beginning with v0.5.0. It is not the definition of GAL.
 
-Codex discovers durable project instructions through a repository-level `AGENTS.md`. GAL therefore uses a thin root loader that directs Codex to GAL Core and the canonical `runtime/adapters/codex/AGENTS.md`; host discovery mechanics do not move into GAL Core.
+Codex discovers durable project instructions through a repository-level `AGENTS.md`; Claude Code uses a repository-level `CLAUDE.md`. GAL uses thin root loaders for both hosts that direct them to GAL Core and their canonical adapters. Host discovery mechanics do not move into GAL Core.
 
 ## Planned adapters
-- Codex (reference adapter implemented; behavioral conformance partially blocked in the current local environment)
-- Kiro (adapter implemented; v0.5.0 conformance not yet run)
-- Claude Code
+- Codex (reference adapter implemented; blind ExpPay reference-host baseline completed)
+- Kiro (adapter implemented)
+- Claude Code (v0.5.2 adapter in conformance)
 - Gemini CLI
 - GitHub Copilot
 - Cursor
