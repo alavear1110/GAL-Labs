@@ -8,7 +8,11 @@
 ## Runtime setup
 Copy the contents of `runtime/` into the project you want to use with GAL.
 
-For Codex, also place the repository's thin root `AGENTS.md` in the project root. It directs Codex to `steering/` and the canonical `adapters/codex/AGENTS.md`; do not copy GAL Core text into another instruction file.
+For Codex, also place the repository's thin root `AGENTS.md` in the project root. It directs Codex to `steering/` and the canonical `adapters/codex/AGENTS.md`.
+
+For Claude Code, place the repository's thin root `CLAUDE.md` in the project root. It directs Claude Code to `steering/` and the canonical `adapters/claude-code/CLAUDE.md`.
+
+Do not copy GAL Core text into host instruction files; the root files are discovery loaders only.
 
 From PowerShell:
 
