@@ -43,9 +43,9 @@ GAL Labs is intended to support:
 
 ## Current alpha
 
-The current alpha line is **GAL Runtime v0.5.0**.
+The current hardened runtime baseline is **GAL Runtime v0.5.1**. Host-adapter expansion continues in the v0.5.2 development line.
 
-The v0.5.0 line adds host-independent architecture and a canonical Host Adapter Contract while preserving the evidence and state controls established in v0.4.x.
+v0.5.1 hardens the host-independent architecture and canonical Host Adapter Contract established in v0.5.0, including phase-sensitive decision debt, question-to-debt linkage, version coherence, explicit migration, and separation of stakeholder content readiness from deterministic validation.
 
 The runtime currently focuses on:
 - adaptive intake
