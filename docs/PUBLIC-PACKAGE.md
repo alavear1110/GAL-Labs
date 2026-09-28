@@ -32,3 +32,14 @@ A public example may demonstrate GAL behavior, but it must be authored as docume
 A release is not publishable until its staged package has been inspected independently of the source tree and contains no path or content from the internal-testing categories above.
 
 The development repository may retain internal tests for engineering purposes. They are not part of the customer/user deliverable.
+
+## Build command
+From the GAL Labs development repository:
+
+```powershell
+./scripts/build-public-package.ps1 -Hosts codex
+```
+
+The builder uses an allowlist rather than copying the repository and deleting tests afterward. It fails if a requested adapter/loader is unavailable and scans the staged path names for internal-test terminology before producing `PACKAGE-MANIFEST.txt`.
+
+Claude Code should be added to `-Hosts` only from a revision that contains its reviewed adapter and root loader and only after its support status is ready to be advertised.
